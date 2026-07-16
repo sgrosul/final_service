@@ -57,7 +57,7 @@ End-to-end сервис для обработки текста с использ
 
 1. Клонируйте репозиторий:
 ```bash
-git clone <repository-url>
+git clone https://github.com/sgrosul/final_service.git>
 cd final_service
 ```
 
