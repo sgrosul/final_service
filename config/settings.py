@@ -1,10 +1,13 @@
+from pydantic import ConfigDict
 from pydantic_settings import BaseSettings
 from typing import Optional
 
 
 class Settings(BaseSettings):
     # GitHub Models settings
-    openai_api_key: str
+    # Делаем опциональным (None по умолчанию), чтобы тесты и CI не падали 
+    # с ValidationError, если переменная окружения не задана
+    openai_api_key: Optional[str] = None
     base_url: str = "https://models.github.ai/inference"
     model_name: str = "openai/gpt-4o"
     
@@ -22,9 +25,13 @@ class Settings(BaseSettings):
     # Fallback settings
     use_fallback: bool = True
     
-    class Config:
-        env_file = ".env"
-        env_file_encoding = "utf-8"
+    # Настройки Pydantic V2 (замена устаревшему class Config)
+    model_config = ConfigDict(
+        env_file=".env",
+        env_file_encoding="utf-8",
+        extra="ignore"  # Игнорируем неизвестные переменные окружения, чтобы не было ошибок
+    )
 
 
+# Глобальный экземпляр настроек
 settings = Settings()
